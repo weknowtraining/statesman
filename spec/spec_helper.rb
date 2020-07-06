@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "statesman"
+require "kingsman"
 require "sqlite3"
-require "mysql2"
+# require "mysql2"
 require "pg"
 require "active_record"
 # We have to include all of Rails to make rspec-rails work

@@ -10,7 +10,7 @@ MIGRATION_CLASS = if Rails.version.split(".").map(&:to_i).first >= 5
                   end
 
 class MyStateMachine
-  include Statesman::Machine
+  include Kingsman::Machine
 
   state :initial, initial: true
   state :succeeded
@@ -36,7 +36,7 @@ class MyActiveRecordModel < ActiveRecord::Base
 end
 
 class MyActiveRecordModelTransition < ActiveRecord::Base
-  include Statesman::Adapters::ActiveRecordTransition
+  include Kingsman::Adapters::ActiveRecordTransition
 
   belongs_to :my_active_record_model
   serialize :metadata, JSON
@@ -74,7 +74,7 @@ class CreateMyActiveRecordModelTransitionMigration < MIGRATION_CLASS
         t.text :metadata, default: "{}"
       end
 
-      if Statesman::Adapters::ActiveRecord.database_supports_partial_indexes?
+      if Kingsman::Adapters::ActiveRecord.database_supports_partial_indexes?
         t.boolean :most_recent, default: true, null: false
       else
         t.boolean :most_recent, default: true
@@ -91,7 +91,7 @@ class CreateMyActiveRecordModelTransitionMigration < MIGRATION_CLASS
               %i[my_active_record_model_id sort_key],
               unique: true, name: "sort_key_index"
 
-    if Statesman::Adapters::ActiveRecord.database_supports_partial_indexes?
+    if Kingsman::Adapters::ActiveRecord.database_supports_partial_indexes?
       add_index :my_active_record_model_transitions,
                 %i[my_active_record_model_id most_recent],
                 unique: true,
@@ -123,7 +123,7 @@ class OtherActiveRecordModel < ActiveRecord::Base
 end
 
 class OtherActiveRecordModelTransition < ActiveRecord::Base
-  include Statesman::Adapters::ActiveRecordTransition
+  include Kingsman::Adapters::ActiveRecordTransition
 
   belongs_to :other_active_record_model
   serialize :metadata, JSON
@@ -154,7 +154,7 @@ class CreateOtherActiveRecordModelTransitionMigration < MIGRATION_CLASS
         t.text :metadata, default: "{}"
       end
 
-      if Statesman::Adapters::ActiveRecord.database_supports_partial_indexes?
+      if Kingsman::Adapters::ActiveRecord.database_supports_partial_indexes?
         t.boolean :most_recent, default: true, null: false
       else
         t.boolean :most_recent, default: true
@@ -167,7 +167,7 @@ class CreateOtherActiveRecordModelTransitionMigration < MIGRATION_CLASS
               %i[other_active_record_model_id sort_key],
               unique: true, name: "other_sort_key_index"
 
-    if Statesman::Adapters::ActiveRecord.database_supports_partial_indexes?
+    if Kingsman::Adapters::ActiveRecord.database_supports_partial_indexes?
       add_index :other_active_record_model_transitions,
                 %i[other_active_record_model_id most_recent],
                 unique: true,
@@ -216,7 +216,7 @@ module MyNamespace
   end
 
   class MyActiveRecordModelTransition < ActiveRecord::Base
-    include Statesman::Adapters::ActiveRecordTransition
+    include Kingsman::Adapters::ActiveRecordTransition
 
     belongs_to :my_active_record_model,
                class_name: "MyNamespace::MyActiveRecordModel"
@@ -252,7 +252,7 @@ class CreateNamespacedARModelTransitionMigration < MIGRATION_CLASS
         t.text :metadata, default: "{}"
       end
 
-      if Statesman::Adapters::ActiveRecord.database_supports_partial_indexes?
+      if Kingsman::Adapters::ActiveRecord.database_supports_partial_indexes?
         t.boolean :most_recent, default: true, null: false
       else
         t.boolean :most_recent, default: true
@@ -264,7 +264,7 @@ class CreateNamespacedARModelTransitionMigration < MIGRATION_CLASS
     add_index :my_namespace_my_active_record_model_transitions, :sort_key,
               unique: true, name: "my_namespaced_key"
 
-    if Statesman::Adapters::ActiveRecord.database_supports_partial_indexes?
+    if Kingsman::Adapters::ActiveRecord.database_supports_partial_indexes?
       add_index :my_namespace_my_active_record_model_transitions,
                 %i[my_active_record_model_id most_recent],
                 unique: true,
