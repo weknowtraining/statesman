@@ -309,10 +309,7 @@ module Kingsman
       end
 
       def db_false
-        value = ::ActiveRecord::Base.connection.type_cast(
-          false,
-          transition_class.columns_hash["most_recent"],
-        )
+        value = ::ActiveRecord::Base.connection.type_cast(false)
         ::ActiveRecord::Base.connection.quote(value)
       end
 
